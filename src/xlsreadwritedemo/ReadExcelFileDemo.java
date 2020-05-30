@@ -168,6 +168,7 @@ public class ReadExcelFileDemo {
 				firstRow++;
 			} catch (NullPointerException  | ClassCastException | NumberFormatException | IllegalStateException exc ) {
 				System.out.println(exc.getMessage());
+				
 			}
 		}
 		System.out.println(hasSet);

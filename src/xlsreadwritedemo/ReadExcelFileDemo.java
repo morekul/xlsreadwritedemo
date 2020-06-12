@@ -14,6 +14,11 @@ import org.apache.poi.ss.usermodel.Row;
 import xlsreadwritedemo.bean.StudentDetail;
 
 public class ReadExcelFileDemo {
+	public static final String cellID = "Student ID";
+	public static final String cellName = "Student Name";
+	public static String subjectComment = "Comment";
+	public static final String commentVal = "You Failed";
+	
 	public static void main(String args[]) throws IOException {
 		// obtaining input bytes from a file
 		FileInputStream fis = new FileInputStream(new File(
@@ -27,10 +32,7 @@ public class ReadExcelFileDemo {
 		HSSFSheet sheet = wb.getSheetAt(0);
 
 		HSSFSheet mechSheet = wbWrite.createSheet("Mechanical Marks");
-		String cellID = "Student ID";
-		String cellName = "Student Name";
-		String subjectComment = "Comment";
-		String commentVal = "You Failed";
+		
 
 		Row mechRow = mechSheet.createRow(0);
 		Cell mechId = mechRow.createCell(0);
@@ -74,12 +76,11 @@ public class ReadExcelFileDemo {
 		subjectComput.setCellValue("Computer Marks");
 		Cell computeComment = computeRow.createCell(3);
 		computeComment.setCellValue(subjectComment);
-
 		subjectComment = "";
 		int studId, mechMarks, civilMarks, electMarks, computerMarks;
 		String studName;
 		int firstRow = 0;
-		HashSet<StudentDetail> hasSet = new HashSet<StudentDetail>();
+		HashSet<Row> hasSet = new HashSet<Row>();
 		for (Row row : sheet) // iteration over row using for each loop
 		{
 
@@ -95,20 +96,22 @@ public class ReadExcelFileDemo {
 				civilMarks = (int) row.getCell(3).getNumericCellValue();
 				electMarks = (int) row.getCell(4).getNumericCellValue();
 				computerMarks = (int) row.getCell(5).getNumericCellValue();
-
-				StudentDetail studDtl = new StudentDetail();
-				studDtl.setStudId(studId);
-				studDtl.setStudName(studName);
-				studDtl.setMechMarks(mechMarks);
-				studDtl.setElectMarks(electMarks);
-				studDtl.setCivilMarks(civilMarks);
-				studDtl.setComputerMarks(computerMarks);
-
-				if (hasSet.contains(studDtl)) {
+                
+				
+				if(studId==0 && studName=="" 
+						&& mechMarks==0 && civilMarks==0 
+						&& electMarks==0 && computerMarks==0 )
+				{
+					// You can write logic here if you want to print this data to fourth sheet
+					continue;
+				}
+				
+				
+				if (hasSet.contains(row)) {
 					firstRow++;
 					continue;
 				}
-				hasSet.add(studDtl);
+				hasSet.add(row);
 				Row mechRow1 = mechSheet.createRow(firstRow);
 				Cell mechId1 = mechRow1.createCell(0);
 				mechId1.setCellValue(studId);
